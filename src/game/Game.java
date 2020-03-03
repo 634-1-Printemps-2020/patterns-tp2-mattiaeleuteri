@@ -15,6 +15,8 @@ public class Game {
 
     public Game() {
         history = new HashMap<>();
+        coin = Coin.getInstance();
+        rules = Rules.getInstance();
     }
 
     /**
@@ -23,14 +25,21 @@ public class Game {
      * @param player le nouveau joueur
      */
     public void addPlayer(Player player) {
-      // TODO: Votre code ici
+      history.put(player, new ArrayList<>());
     }
 
     /**
      * Faire joueur tous les joueurs et stocker chaque partie dans history
      */
     public void play() {
-      // TODO: Votre code ici
+      for(Player player : history.keySet()) {
+          while (!rules.checkWin(history.get(player))){
+              List<CoinState> partiesJouees = history.get(player);
+              player.play(coin);
+              partiesJouees.add(coin.getState());
+              history.put(player, partiesJouees);
+          }
+      }
     }
 
     /**
@@ -39,8 +48,18 @@ public class Game {
      * @return Statistics
      */
     public Statistics getStatistics() {
-      // TODO: Votre code ici
-      return null;
+        float averageToWin;
+        int fewerMovesToWin = 100000;
+        int mostMovesToWin = 0;
+        int totalNumberMoves = 0;
+        for (Player player : history.keySet()) {
+            totalNumberMoves += history.get(player).size();
+            if (history.get(player).size() < fewerMovesToWin) fewerMovesToWin = history.get(player).size();
+            if (history.get(player).size() > mostMovesToWin) mostMovesToWin = history.get(player).size();
+        }
+        averageToWin = (float)totalNumberMoves/ history.keySet().size();
+
+        return new Statistics(averageToWin, fewerMovesToWin, mostMovesToWin, totalNumberMoves);
     }
 
     /**
@@ -49,8 +68,7 @@ public class Game {
      * @return Map contenant chaque joueur et la liste des ses lancers
      */
     public Map<Player, List<CoinState>> getHistory() {
-      // TODO: Votre code ici
-      return null;
+      return history;
     }
 
 
@@ -61,8 +79,7 @@ public class Game {
      * @return la liste des lancers d'un joueur
      */
     public List<CoinState> getSpecificHistory(Player player) {
-      // TODO: Votre code ici
-      return null;
+      return history.get(player);
     }
 
 }

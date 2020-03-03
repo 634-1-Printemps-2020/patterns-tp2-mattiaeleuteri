@@ -7,6 +7,7 @@ public class Statistics {
 
   // Le nombre le plus petit de lancers pour avoir gagné une partie
   private int fewerMovesToWin;
+
   // Le nombre le plus grand de lancers pour avoir gagné une partie
   private int mostMovesToWin;
 
@@ -52,4 +53,13 @@ public class Statistics {
     this.totalNumberMoves = totalNumberMoves;
   }
 
+  @Override
+  public String toString() {
+    return "Statistics{" +
+            "Coups en moyenne pour gagner : " + averageToWin +
+            "\n Moins de coups pour gagner : " + fewerMovesToWin +
+            "\n Plus de coups pour gagner : " + mostMovesToWin +
+            "\n Nombre total de coups de la partie : " + totalNumberMoves +
+            '}';
+  }
 }
